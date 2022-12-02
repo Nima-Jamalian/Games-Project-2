@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float mouseSensivity = 1f;
     private float gravity = 9.81f;
     private CharacterController characterController;
+
+    [SerializeField] private Weapon weapon;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,15 +25,7 @@ public class Player : MonoBehaviour
         CharacterMovement();
         MouseMovement();
         CursorEnableCheck();
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray rayOrigin = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-            if (Physics.Raycast(rayOrigin, out RaycastHit hitInfo))
-            {
-                Debug.Log(hitInfo.transform.name);
-                hitInfo.transform.GetComponent<MeshRenderer>().material.color = Color.red;
-            }
-        }
+        Shooting();
     }
 
     private void CharacterMovement()
@@ -68,6 +62,14 @@ public class Player : MonoBehaviour
         Vector3 newRotationY = camera.transform.localEulerAngles;
         newRotationY.x -= mouseY * mouseSensivity;
         camera.transform.localEulerAngles = newRotationY;
+    }
+
+    private void Shooting()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            weapon.RayCasting();
+        }
     }
 
     private void CursorEnableCheck()
