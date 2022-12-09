@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
         MouseMovement();
         CursorEnableCheck();
         Shooting();
+        Realoding();
     }
 
     private void CharacterMovement()
@@ -78,6 +79,14 @@ public class Player : MonoBehaviour
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
+        }
+    }
+
+    private void Realoding()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            weapon.Reload();
         }
     }
 }

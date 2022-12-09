@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] private int health = 5;
     [SerializeField] private GameObject brokenEnemy;
     [SerializeField] private GameObject deathExplosion;
     // Start is called before the first frame update
@@ -16,6 +17,15 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void TakeDamage()
+    {
+        health--;
+        if(health <= 0)
+        {
+            Death();
+        }
     }
 
     public void Death()
