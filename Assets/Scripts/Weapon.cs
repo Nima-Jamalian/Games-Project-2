@@ -9,6 +9,8 @@ public class Weapon : MonoBehaviour
     [SerializeField] public int maxAmmo = 50;
     [SerializeField] public int currentAmmo;
     [SerializeField] private Transform MuzzleLocation;
+    private Animator animator;
+    private int WeaponKickAnimarorTriggerID;
     private UIManager uIManager;
     private float nextTimeToFire = 0f;
     private bool isReloding = false;
@@ -16,6 +18,7 @@ public class Weapon : MonoBehaviour
     [Header("Weapon VFX")]
     [SerializeField] private GameObject hitSpark;
     [SerializeField] private GameObject muzzleFlash;
+    [SerializeField] private GameObject projectile;
     AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
@@ -24,16 +27,20 @@ public class Weapon : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         uIManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         uIManager.UpdateAmmoText(currentAmmo,maxAmmo);
+        animator = GetComponent<Animator>();
+        WeaponKickAnimarorTriggerID = Animator.StringToHash("WeaponFire");
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    
     }
 
     public void RayCasting()
     {
+        //Check Fire Rate
         if (Time.time >= nextTimeToFire && currentAmmo > 0 && isReloding == false)
         {
             //Update Ammo
@@ -45,22 +52,26 @@ public class Weapon : MonoBehaviour
             //Muzzle Flash
             GameObject myMuzzleFlash =  Instantiate(muzzleFlash, MuzzleLocation.position, Quaternion.identity);
             Destroy(myMuzzleFlash, 1f);
+            //Projectile
+            Instantiate(projectile, MuzzleLocation.transform.position, Camera.main.transform.rotation);
             //Update ammo UI
             uIManager.UpdateAmmoText(currentAmmo,maxAmmo);
+            //Weapon Recoil
+            animator.SetTrigger(WeaponKickAnimarorTriggerID);
+            //Check for Ray Hit
             Ray rayOrigin = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
             if (Physics.Raycast(rayOrigin, out RaycastHit hitInfo))
             {
                 Debug.Log(hitInfo.transform.name);
                 GameObject myHitSpark = Instantiate(hitSpark, hitInfo.transform.position, Quaternion.identity);
                 Destroy(myHitSpark, 1f);
+                //Destroy(myProjectile, 2f);
                 if (hitInfo.transform.CompareTag("Enemy"))
                 {
                     hitInfo.transform.GetComponent<Enemy>().TakeDamage();
                 }
-
             }
-        }
-
+        } 
     }
 
     public void Reload()

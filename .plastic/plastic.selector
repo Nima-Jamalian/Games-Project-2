@@ -1,4 +1,0 @@
-repository "Games Project 2@Nima_Jamalian@cloud"
-  path "/"
-    smartbranch "/main"     
-     
