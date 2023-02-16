@@ -78,10 +78,10 @@ public class Player : MonoBehaviour
         {
             if(isPlayerRunning == true)
             {
-                playRate = 0.5f;
+                playRate = 0.4f;
             } else
             {
-                playRate = 0.8f;
+                playRate = 0.6f;
             }
             if(Time.time >= time)
             {

@@ -5,16 +5,16 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     [Header("Weapon Pramaters")]
-    [SerializeField] private float fireRate = 15f;
+    [SerializeField] float fireRate = 15f;
     [SerializeField] public float maxAmmo = 50;
     [SerializeField] public float currentAmmo;
     float cuurentAmmuPrecentage;
-    [SerializeField] private Transform MuzzleLocation;
-    private Animator animator;
-    private int WeaponKickAnimarorTriggerID;
-    private UIManager uIManager;
-    private float nextTimeToFire = 0f;
-    private bool isReloding = false;
+    [SerializeField] Transform MuzzleLocation;
+    Animator animator;
+    int WeaponKickAnimarorTriggerID;
+    UIManager uIManager;
+    float nextTimeToFire = 0f;
+    bool isReloding = false;
 
     [Header("Weapon VFX")]
     [SerializeField] private GameObject hitSpark;
@@ -86,7 +86,7 @@ public class Weapon : MonoBehaviour
                 }
                 else
                 {
-                    hitInfo.transform.GetComponent<MeshRenderer>().material.color = Color.red;
+                    //hitInfo.transform.GetComponent<MeshRenderer>().material.color = Color.red;
                 }
             }
         } 
@@ -113,7 +113,6 @@ public class Weapon : MonoBehaviour
 
     IEnumerator WeaponColorChangeLerp(Color endValue, float duration)
     {
-        Debug.Log("Color Lerp");
         isColorChangeActive = true;
         float t = 0;
         Color startValue = weaponMatetial.GetColor("_EmissionColor");
