@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] float health = 10;
     [SerializeField] Camera camera;
     [SerializeField] private float speed = 2f;
     [SerializeField] private float mouseSensivity = 1f;
@@ -92,6 +93,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    float MouseYrotation;
     private void MouseMovement()
     {
         float mouseX = Input.GetAxis("Mouse X");
@@ -100,11 +102,26 @@ public class Player : MonoBehaviour
         transform.localEulerAngles = newRotationX;
 
         float mouseY = Input.GetAxis("Mouse Y");
-        Vector3 newRotationY = camera.transform.localEulerAngles;
-        newRotationY.x -= mouseY * mouseSensivity;
-        camera.transform.localEulerAngles = newRotationY;
+        MouseYrotation -= mouseY * mouseSensivity;
+        MouseYrotation = ClampAngle(MouseYrotation, -89, 89);
+        Camera.main.transform.localRotation = Quaternion.Euler(MouseYrotation, 0, 0);
+        //Vector3 newRotationY = camera.transform.localEulerAngles;
+        //newRotationY.x -= mouseY * mouseSensivity;
+        //camera.transform.localEulerAngles = newRotationY;
     }
 
+    private float ClampAngle(float Angle, float min, float max)
+    {
+        if(Angle < -360f)
+        {
+            Angle += 360f;
+        }
+        if(Angle > 360f)
+        {
+            Angle -= 360f;
+        }
+        return Mathf.Clamp(Angle,min,max);
+    }
     private void Shooting()
     {
         if (Input.GetMouseButton(0))
@@ -127,6 +144,15 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             StartCoroutine(weapon.Realod());
+        }
+    }
+
+    public void TakeDamage()
+    {
+        health--;
+        if(health == 0)
+        {
+            Debug.Log("Game Over");
         }
     }
 }

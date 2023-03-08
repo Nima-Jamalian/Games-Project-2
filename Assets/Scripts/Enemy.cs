@@ -10,9 +10,13 @@ public class Enemy : MonoBehaviour
     [SerializeField] private GameObject brokenEnemy;
     [SerializeField] private GameObject deathExplosion;
     [SerializeField] private GameObject projectile;
+    [Header("Enemy VFX")]
+    [SerializeField] AudioSource takeDamageAudioSource;
+    [SerializeField] AudioSource attackAudioSource;
+    [SerializeField] Transform projectileSpawnPoint;
     [Header("Enemy AI")]
     private NavMeshAgent navMeshAgent;
-    [SerializeField] private Transform playerTransform;
+    [SerializeField] private Transform playerLookAtTarget;
     [SerializeField] private LayerMask isGround, isPlayer;
     //Patroling
     [SerializeField] private Vector3 walkPos;
@@ -27,7 +31,6 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerTransform = GameObject.FindWithTag("Player").GetComponent<Transform>();
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
@@ -89,21 +92,20 @@ public class Enemy : MonoBehaviour
 
     private void ChasePlayer()
     {
-        navMeshAgent.SetDestination(playerTransform.position);
+        navMeshAgent.SetDestination(playerLookAtTarget.position);
     }
 
     private void AttackPlayer()
     {
         //Make Enemey stop from moving
         navMeshAgent.SetDestination(transform.position);
-        transform.LookAt(playerTransform);
+        transform.LookAt(playerLookAtTarget);
 
         if(alreadyAttacked == false)
         {
             //Attack Code here
-            Rigidbody rigidbody = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
-            rigidbody.AddForce(transform.forward * 32f, ForceMode.Impulse);
-            rigidbody.AddForce(transform.up * 8f, ForceMode.Impulse);
+            attackAudioSource.Play();
+            Instantiate(projectile, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), attackTime);
         }
@@ -125,6 +127,7 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage()
     {
+        takeDamageAudioSource.Play();
         health--;
         if(health <= 0)
         {

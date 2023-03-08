@@ -17,7 +17,8 @@ public class Weapon : MonoBehaviour
     bool isReloding = false;
 
     [Header("Weapon VFX")]
-    [SerializeField] private GameObject hitSpark;
+    [SerializeField] private GameObject hitSparkGreen;
+    [SerializeField] private GameObject hitSparkRed;
     [SerializeField] private GameObject muzzleFlash;
     [SerializeField] private GameObject projectile;
     [SerializeField] Material weaponMatetial;
@@ -77,15 +78,18 @@ public class Weapon : MonoBehaviour
             if (Physics.Raycast(rayOrigin, out RaycastHit hitInfo))
             {
                 //Debug.Log(hitInfo.transform.name);
-                GameObject myHitSpark = Instantiate(hitSpark, hitInfo.point, Quaternion.identity);
-                Destroy(myHitSpark, 1f);
+
                 //Destroy(myProjectile, 2f);
                 if (hitInfo.transform.CompareTag("Enemy"))
                 {
+                    GameObject myHitSpark = Instantiate(hitSparkRed, hitInfo.point, Quaternion.identity);
+                    Destroy(myHitSpark, 1f);
                     hitInfo.transform.GetComponent<Enemy>().TakeDamage();
                 }
                 else
                 {
+                    GameObject myHitSpark = Instantiate(hitSparkGreen, hitInfo.point, Quaternion.identity);
+                    Destroy(myHitSpark, 1f);
                     //hitInfo.transform.GetComponent<MeshRenderer>().material.color = Color.red;
                 }
             }
