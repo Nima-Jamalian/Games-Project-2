@@ -1,26 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private TMP_Text ammoText;
+    [SerializeField] Image weaponUIBar;
 
-    // Start is called before the first frame update
-    void Start()
+    public void UpdateAmmuUI(float currentAmmo, float maxAmmo)
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public void UpdateAmmoText(int currentAmmo, int maxAmmo)
-    {
-        ammoText.text = currentAmmo.ToString() + "/" + maxAmmo.ToString();
+        weaponUIBar.fillAmount = Mathf.InverseLerp(0, maxAmmo, currentAmmo);
     }
 }

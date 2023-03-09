@@ -59,6 +59,8 @@ public class Weapon : MonoBehaviour
             //Shooting Visual Effect and update paramatares
             //Update Ammo
             currentAmmo--;
+            //Update UI
+            uIManager.UpdateAmmuUI(currentAmmo, maxAmmo);
             //Update Fire rate
             nextTimeToFire = Time.time + 1f / fireRate;
             //Shoot Audio
@@ -140,7 +142,7 @@ public class Weapon : MonoBehaviour
         audioSource.Stop();
         audioSource.clip = shootingAudioClip;
         currentAmmo = maxAmmo;
-        //uIManager.UpdateAmmoText(currentAmmo, maxAmmo);
+        uIManager.UpdateAmmuUI(currentAmmo, maxAmmo);
         isReloding = false;
     }
 
