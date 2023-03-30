@@ -1264,11 +1264,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   walkPos: {x: 0, y: 0, z: 0}
-  walkPosSet: 1
-  walkPosRange: 5
+  walkPosSet: 0
+  walkPosRange: 0
   attackTime: 1
-  sightRange: 12.5
-  attackRange: 8.8
+  sightRange: 0
+  attackRange: 0
   isPlayerInSightRange: 0
   isPlayerInAttackRange: 0
 --- !u!4 &962340054
